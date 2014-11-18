@@ -183,6 +183,9 @@ class Build(properties.PropertiesMixin):
         for change in self.allChanges():
             props.updateFromProperties(change.properties)
 
+        # properties from the builder configuration
+        self.builder.setupProperties(props)
+
         # and finally, get any properties from requests (this is the path
         # through which schedulers will send us properties)
         for rq in self.requests:
@@ -200,8 +203,6 @@ class Build(properties.PropertiesMixin):
             props.setProperty("repository", source.repository, "Build")
             props.setProperty("codebase", source.codebase, "Build")
             props.setProperty("project", source.project, "Build")
-
-        self.builder.setupProperties(props)
 
     def setupSlaveBuilder(self, slavebuilder):
         self.slavebuilder = slavebuilder
